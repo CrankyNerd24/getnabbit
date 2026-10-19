@@ -290,9 +290,9 @@
         }).then(function (r) {
           if (r.ok) { document.body.classList.add('sent'); return; }
           return r.json().catch(function () { return {}; }).then(function (data) {
-            var msg = data && data.errors && data.errors.length
+            var msg = (data && data.errors && data.errors.length)
               ? data.errors.map(function (e) { return e.message; }).join(' ')
-              : "That didn't go through. Try once more.";
+              : (data && data.error) || ("That didn't go through (error " + r.status + "). Try once more.");
             throw new Error(msg);
           });
         }).catch(function (e) {
