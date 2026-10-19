@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nabbit Beta</title>
+  <meta name="description" content="Join the Nabbit beta. 25 spots for people with ADHD to try three-tap reminders and alerts you can't miss.">
+  <meta property="og:title" content="Nabbit Beta: Reminders That Stick">
+  <meta property="og:description" content="Three taps to make a reminder. Alerts you can't miss. 25 free beta spots for ADHD brains.">
+  <meta property="og:image" content="https://getnabbit.com/assets/icon.png">
+  <meta name="theme-color" content="#FFF6EE">
+  <link rel="icon" href="assets/icon.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <style>
+    /* Primary theme from the app. Text is the app's warm ink and paper. */
+    :root {
+      --yellow: #FFC93C;
+      --blue: #3D7BFF;
+      --coral: #FF5A5F;
+      --navy: #14213D;
+      --teal: #2EC4B6;
+      --ink: #1E1A16;
+      --paper: #FFF6EE;
+
+      --bg: var(--paper);
+      --text: var(--ink);
+      --muted: #5C534A;
+      --card: #FFFFFF;
+      --line: #EADFD3;
+      --link: #1F5FE0;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #17130F;
+        --text: var(--paper);
+        --muted: #C9BCAE;
+        --card: #231D18;
+        --line: #3A3129;
+        --link: #8DB2FF;
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 17px/1.55 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    a { color: var(--link); }
+    .wrap { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+
+    .top { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 20px; color: var(--text); text-decoration: none; }
+    .brand img { width: 36px; height: 36px; border-radius: 9px; }
+    .pill {
+      font-size: 13px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
+      background: var(--teal); color: var(--ink); padding: 6px 12px; border-radius: 999px;
+    }
+
+    /* Hero */
+    .hero { display: grid; grid-template-columns: 1.15fr 1fr; gap: 44px; align-items: center; padding: 32px 0 56px; }
+    h1 { font-size: clamp(40px, 7vw, 62px); line-height: 1.02; letter-spacing: -0.02em; margin: 0 0 16px; }
+    .lede { font-size: 20px; color: var(--muted); margin: 0 0 26px; }
+
+    /* Signup */
+    .signup {
+      background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px;
+    }
+    .signup label { display: block; font-weight: 800; margin-bottom: 8px; }
+    .field { display: flex; gap: 10px; }
+    .field input[type=email] {
+      flex: 1; min-width: 0;
+      font: inherit; font-size: 18px;
+      padding: 14px 16px; border-radius: 12px;
+      border: 2px solid var(--line); background: var(--bg); color: var(--text);
+    }
+    .field input[type=email]:focus { outline: none; border-color: var(--blue); }
+    .field button {
+      font: inherit; font-weight: 800; font-size: 18px;
+      padding: 14px 22px; border: 0; border-radius: 12px; cursor: pointer;
+      background: var(--coral); color: var(--ink);
+      box-shadow: 0 4px 0 rgba(0,0,0,0.18);
+      transition: transform .08s ease, box-shadow .08s ease;
+    }
+    .field button:active { transform: translateY(3px); box-shadow: 0 1px 0 rgba(0,0,0,0.18); }
+    .field button:disabled { opacity: .6; cursor: default; }
+    .fine { font-size: 14px; color: var(--muted); margin: 12px 0 0; }
+    .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+    .error { color: var(--coral); font-weight: 700; margin: 10px 0 0; display: none; }
+    @media (prefers-color-scheme: dark) { .error { color: #FF8A8D; } }
+
+    .thanks {
+      display: none;
+      background: var(--teal); color: var(--ink);
+      border-radius: 6px; padding: 22px 20px;
+      font-weight: 800; font-size: 24px; line-height: 1.2;
+      transform: rotate(-1.5deg);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.16);
+    }
+    .thanks span { display: block; font-size: 16px; font-weight: 600; margin-top: 6px; }
+    .sent .signup { display: none; }
+    .sent .thanks { display: block; animation: stick .35s ease-out; }
+    @keyframes stick { from { transform: rotate(-6deg) scale(.9); opacity: 0; } }
+
+    /* Sticky notes */
+    .board { display: grid; gap: 14px; }
+    .note {
+      padding: 22px 20px; border-radius: 6px;
+      font-weight: 800; font-size: 26px; color: var(--ink);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.16);
+    }
+    .note small {
+      display: block; font-size: 13px; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; opacity: 0.8; margin-bottom: 4px;
+    }
+    .note.yellow { background: var(--yellow); transform: rotate(-2deg); }
+    .note.blue   { background: var(--blue);   transform: rotate(1.5deg); margin-left: 24px; }
+    .note.coral  { background: var(--coral);  transform: rotate(-1deg); margin-left: 8px; }
+
+    /* Sections */
+    section { padding: 48px 0; border-top: 1px solid var(--line); }
+    h2 { font-size: clamp(28px, 4.5vw, 38px); letter-spacing: -0.01em; margin: 0 0 8px; }
+    .sub { color: var(--muted); margin: 0 0 28px; font-size: 19px; }
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+
+    .alert { background: var(--navy); color: var(--paper); border-radius: 22px; padding: 28px; max-width: 360px; }
+    .alert .task { font-size: 34px; font-weight: 800; line-height: 1.1; margin: 0 0 6px; }
+    .alert .line { opacity: 0.85; margin: 0 0 20px; }
+    .alert .buttons { display: grid; gap: 10px; }
+    .alert .buttons span { display: block; text-align: center; padding: 12px; border-radius: 12px; font-weight: 800; color: var(--ink); }
+    .alert .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    .nudges { list-style: none; padding: 0; margin: 0; }
+    .nudges li { padding: 12px 0; border-bottom: 1px solid var(--line); }
+    .nudges li:last-child { border-bottom: 0; }
+    .nudges b { display: block; }
+    .nudges span { color: var(--muted); }
+
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px; }
+    .card h3 { margin: 0 0 6px; font-size: 19px; }
+    .card p { margin: 0; color: var(--muted); }
+    .dot { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 8px; vertical-align: 1px; }
+
+    .again { text-align: center; }
+    .again .btn {
+      display: inline-block; margin-top: 8px;
+      padding: 14px 24px; border-radius: 12px; font-weight: 800; text-decoration: none;
+      background: var(--ink); color: var(--paper);
+    }
+    @media (prefers-color-scheme: dark) { .again .btn { background: var(--paper); color: var(--ink); } }
+
+    footer { border-top: 1px solid var(--line); padding: 28px 0 48px; color: var(--muted); font-size: 15px; }
+    footer a { color: var(--muted); margin-right: 16px; }
+
+    @media (max-width: 760px) {
+      .hero, .split { grid-template-columns: 1fr; gap: 32px; }
+      .grid { grid-template-columns: 1fr; }
+      .note.blue { margin-left: 12px; }
+      .board { padding-right: 10px; }
+    }
+    @media (max-width: 420px) {
+      .field { flex-direction: column; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .sent .thanks { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <a class="brand" href="./"><img src="assets/icon.png" alt="">Nabbit</a>
+      <span class="pill">Beta · 25 spots</span>
+    </header>
+
+    <div class="hero" id="join">
+      <div>
+        <h1>Reminders that stick.</h1>
+        <p class="lede">Nabbit is a reminder app built for ADHD brains. I'm looking for 25 people
+          with ADHD to try it before launch and tell me what works.</p>
+
+        <form class="signup" id="signup" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+          <label for="email">Your email</label>
+          <div class="field">
+            <input type="email" id="email" name="email" required autocomplete="email"
+                   inputmode="email" placeholder="you@example.com">
+            <button type="submit">I'm in</button>
+          </div>
+          <div class="hp" aria-hidden="true">
+            <label>Leave this empty <input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label>
+          </div>
+          <input type="hidden" name="_subject" value="New Nabbit beta tester">
+          <p class="error" id="error" role="alert">That didn't go through. Try once more.</p>
+          <p class="fine">Free through TestFlight. iPhone on iOS 26; Apple Watch optional.
+            Your email is only used to send your invite.</p>
+        </form>
+
+        <div class="thanks" role="status" aria-live="polite">
+          You're on the list.
+          <span>Watch your inbox for the TestFlight invite.</span>
+        </div>
+      </div>
+
+      <div class="board" aria-label="The three taps: Call, Dentist, Tomorrow AM">
+        <div class="note yellow"><small>Tap 1</small>Call</div>
+        <div class="note blue"><small>Tap 2</small>Dentist</div>
+        <div class="note coral"><small>Tap 3</small>Tomorrow AM</div>
+      </div>
+    </div>
+
+    <section>
+      <h2>Three taps. Done.</h2>
+      <p class="sub">Like sticky notes on the fridge: quick to make, hard to miss.</p>
+      <div class="grid">
+        <div class="card">
+          <h3><span class="dot" style="background:var(--yellow)"></span>What to do</h3>
+          <p>Big notes for Call, Pick up, Take, Pay, and more. Add your own.</p>
+        </div>
+        <div class="card">
+          <h3><span class="dot" style="background:var(--blue)"></span>Who or what</h3>
+          <p>The ones you use most float to the front.</p>
+        </div>
+        <div class="card">
+          <h3><span class="dot" style="background:var(--coral)"></span>When</h3>
+          <p>In 1 hour, Tonight, Tomorrow AM, Next Monday. Tapping it saves. No Save button.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="split">
+        <div>
+          <h2>Alerts you can't ignore.</h2>
+          <p class="sub">The first alert rings like an alarm, even on silent or in a Focus.</p>
+          <ul class="nudges">
+            <li><b>Still not done? Nabbit nudges you.</b>
+              <span>Three more times, every 10 minutes, a little more direct each time.</span></li>
+            <li><b>Then it goes quiet.</b>
+              <span>Anything that slips stays on your list. No judgment.</span></li>
+            <li><b>Too busy right now?</b>
+              <span>15 min brings it back soon. Tonight moves it to this evening.</span></li>
+          </ul>
+        </div>
+        <div class="alert" aria-label="Example alert">
+          <p class="task">Call Dentist</p>
+          <p class="line">Right now. It's a two-minute call.</p>
+          <div class="buttons">
+            <span style="background:var(--teal)">Done</span>
+            <div class="row">
+              <span style="background:var(--yellow)">15 min</span>
+              <span style="background:var(--paper)">Tonight</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="again">
+      <h2>25 spots. Free.</h2>
+      <p class="sub">No account, no ads, no tracking. Your reminders stay on your iPhone.</p>
+      <a class="btn" href="#join">Grab a spot</a>
+    </section>
+
+    <footer>
+      <a href="https://crankynerd24.github.io/Nabbit/">About Nabbit</a>
+      <a href="https://crankynerd24.github.io/Nabbit/privacy.html">Privacy</a>
+      <a href="https://crankynerd24.github.io/Nabbit/support.html">Support</a>
+      <p>© 2026 Nabbit</p>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      var form = document.getElementById('signup');
+      var err = document.getElementById('error');
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        err.style.display = 'none';
+        var btn = form.querySelector('button');
+        btn.disabled = true;
+        fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        }).then(function (r) {
+          if (!r.ok) throw new Error('bad');
+          document.body.classList.add('sent');
+        }).catch(function () {
+          err.style.display = 'block';
+          btn.disabled = false;
+        });
+      });
+      document.querySelector('.again .btn').addEventListener('click', function () {
+        setTimeout(function () { document.getElementById('email').focus(); }, 300);
+      });
+    })();
+  </script>
+</body>
+</html>
