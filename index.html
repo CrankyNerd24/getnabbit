@@ -293,6 +293,7 @@
             var msg = (data && data.errors && data.errors.length)
               ? data.errors.map(function (e) { return e.message; }).join(' ')
               : (data && data.error) || ("That didn't go through (error " + r.status + "). Try once more.");
+            if (/recaptcha|ajax/i.test(msg)) { HTMLFormElement.prototype.submit.call(form); return; }
             throw new Error(msg);
           });
         }).catch(function (e) {
